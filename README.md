@@ -1,6 +1,16 @@
-venv через poetry: 
+**venv через poetry:** 
+    
     pip install poetry
+    
     poetry shell
 
-создать тестовую БД python -m bot.db
-запустить бота python -m bot
+БД: 
+
+    python -m bot.db create
+    
+    python -m bot.db reset
+
+
+запустить бота:
+
+    python -m bot
