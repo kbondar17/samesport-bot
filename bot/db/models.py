@@ -1,5 +1,3 @@
-from bot.db.session import create_db
-
 from sqlalchemy import (
     Boolean,
     Column,
@@ -41,7 +39,3 @@ class User(Base):
 
     def __repr__(self) -> str:
         return f'User {self.name} {self.uid}'
-
-
-if __name__ == '__main__':
-    create_db()

@@ -15,9 +15,18 @@
             "name": "db create",
             "type": "python",
             "request": "launch",
-            "module": "bot.db.models",
+            "module": "bot.db",
             "args": [
                 "create"
+            ]
+        },
+        {
+            "name": "db reset",
+            "type": "python",
+            "request": "launch",
+            "module": "bot.db",
+            "args": [
+                "reset"
             ]
         },
         {

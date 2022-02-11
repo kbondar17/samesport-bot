@@ -1,18 +1,17 @@
-from dotenv import load_dotenv
-import os
 import logging
 import logging.config
-from yarl import URL
 
 from aiogram import Bot, Dispatcher
 from aiogram.types import ParseMode
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 
+from dotenv import dotenv_values
 
-from config import TOKEN
+config = dotenv_values(".env")
 
-bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
+
+bot = Bot(token=config['TOKEN'], parse_mode=ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 

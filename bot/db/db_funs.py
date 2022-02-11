@@ -5,7 +5,7 @@ from bot.loader import get_logger
 logger = get_logger(f'my_log-{__name__}')
 
 
-class db_funs:
+class Database:
 
     def add_user(self, u_id, user_name):
         user = db_session.query(User).filter_by(uid=u_id).count()
@@ -35,9 +35,6 @@ class db_funs:
         db_session.commit()
         logger.info(f'Поменяли расписание секции!')
 
-    def change_mail(self, u_id, email):
-        pass
-
     def get_section_info(self, u_id=2) -> Section:
         sec = db_session.query(Section).filter_by(uid=u_id).first()
         if not sec:
@@ -45,4 +42,4 @@ class db_funs:
         return sec
 
 
-repo = db_funs()
+repo = Database()

@@ -26,6 +26,8 @@ kb = InlineKeyboardMarkup(
 
 @dp.message_handler(text_contains='Изменить данные')
 async def change(message: types.Message):
+    # показываем текущие данные, предлагаем выбрать, что изменить
+
     sec_info = repo.get_section_info()
 
     text = f'<b><u>Сейчас на сайте следующие данные:</u></b>\
@@ -35,6 +37,3 @@ async def change(message: types.Message):
 
     await message.answer(text=text)
     await message.answer(text='Что меняем?', reply_markup=kb)
-
-
-#    await message.answer(text=welcome_text, reply_markup=main_menu)

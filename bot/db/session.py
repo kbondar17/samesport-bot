@@ -2,12 +2,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from config import SQLALCHEMY_DATABASE_URI
+from bot.loader import config
 
+SQLALCHEMY_DATABASE_URI = config['SQLALCHEMY_DATABASE_URI']
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
+
 db_session = scoped_session(sessionmaker(bind=engine))
 
-print('SQLALCHEMY_DATABASE_URI---', SQLALCHEMY_DATABASE_URI)
 Base = declarative_base()
 Base.query = db_session.query_property
 
