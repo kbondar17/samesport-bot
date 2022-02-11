@@ -26,21 +26,7 @@ def get_logger(name):
     sh.setLevel(logging.DEBUG)
     logger.addHandler(sh)
     return logger
-    # logger.debug(f'logger {name} initialized!')
 
 
-# get_logger('bot_log')
-# logger = logging.getLogger('bot_log.main')
-# logger.debug('logger works!')
-logger = get_logger('ТЕЛЕГРАМ ЛОГЕР:')
+logger = get_logger('my_logger:')
 dp.middleware.setup(LoggingMiddleware(logger))
-print(logger.level)
-print(logger.debug('сделали логер'))
-
-# вот так инициализировать в других файлах
-'''
-
-from bot.loader import get_logger
-logger = get_logger(f'my_log-{__name__}')
-
-'''

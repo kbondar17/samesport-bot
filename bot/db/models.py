@@ -1,7 +1,5 @@
 from bot.db.session import create_db
-from typing import Any
 
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (
     Boolean,
     Column,
@@ -12,7 +10,7 @@ from sqlalchemy import (
     Table,
     UniqueConstraint,
 )
-from sqlalchemy.orm import relationship
+
 
 from bot.db.session import Base
 

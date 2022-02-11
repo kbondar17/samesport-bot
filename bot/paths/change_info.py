@@ -1,5 +1,3 @@
-import logging
-
 from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.dispatcher import FSMContext
@@ -18,6 +16,12 @@ kb = InlineKeyboardMarkup(
     ]
 
 )
+
+
+text = '<b><u>Сейчас на сайте следующие данные:</u></b>\
+        \n\n<b>Название:</b>\n\n{}\n\n\
+<b>Описание:</b>\n\n{}\n\n\
+<b>Распиcание:</b>\n\n{}'
 
 
 @dp.callback_query_handler(text_contains='edit_name')
@@ -46,12 +50,7 @@ async def get_text(message: types.Message, state: FSMContext):
     await message.answer('Поменяли название. Теперь вот так!')
     sec_info = repo.get_section_info()
 
-    text = f'<b><u>Сейчас на сайте следующие данные:</u></b>\
-        \n\n<b>Название:</b>\n\n{sec_info.name}\n\n\
-<b>Описание:</b>\n\n{sec_info.description}\n\n\
-<b>Распиcание:</b>\n\n{sec_info.timetable}'
-
-    await message.answer(text)
+    await message.answer(text.format(sec_info.name, sec_info.description, sec_info.timetable))
 
 
 @dp.message_handler(state=My_states.typing_descr)
@@ -62,12 +61,7 @@ async def get_text(message: types.Message, state: FSMContext):
     await message.answer('Поменяли описание. Теперь вот так!')
     sec_info = repo.get_section_info()
 
-    text = f'<b><u>Сейчас на сайте следующие данные:</u></b>\
-        \n\n<b>Название:</b>\n\n{sec_info.name}\n\n\
-<b>Описание:</b>\n\n{sec_info.description}\n\n\
-<b>Распиcание:</b>\n\n{sec_info.timetable}'
-
-    await message.answer(text)
+    await message.answer(text.format(sec_info.name, sec_info.description, sec_info.timetable))
 
 
 @dp.message_handler(state=My_states.typing_timetable)
@@ -78,9 +72,4 @@ async def get_text(message: types.Message, state: FSMContext):
     await message.answer('Поменяли расписание. Теперь вот так!')
     sec_info = repo.get_section_info()
 
-    text = f'<b><u>Сейчас на сайте следующие данные:</u></b>\
-        \n\n<b>Название:</b>\n\n{sec_info.name}\n\n\
-<b>Описание:</b>\n\n{sec_info.description}\n\n\
-<b>Распиcание:</b>\n\n{sec_info.timetable}'
-
-    await message.answer(text)
+    await message.answer(text.format(sec_info.name, sec_info.description, sec_info.timetable))
