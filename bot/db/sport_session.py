@@ -7,6 +7,8 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
+import re
+
 from bot.loader import config
 
 SQLALCHEMY_DATABASE_URI = config['SQLALCHEMY_DATABASE_URI']
@@ -20,5 +22,6 @@ db_session = scoped_session(sessionmaker(bind=engine))
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 
-# wp_usermeta = Base.classes.wp_usermeta
-# db_session.query(wp_usermeta).first().meta_key
+
+
+
