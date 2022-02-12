@@ -5,7 +5,7 @@ from bot.loader import get_logger
 
 logger = get_logger(f'my_log-{__name__}')
 
-
+# each function is an SQL query
 class Database:
 
     def add_user(self, u_id, user_name):
@@ -36,7 +36,7 @@ class Database:
         db_session.commit()
         logger.info(f'Поменяли расписание секции!')
 
-    def get_section_info(self, u_id=2) -> Section:
+    def get_section_info(self, u_id=1) -> Section:
         sec = db_session.query(Section).filter_by(uid=u_id).first()
         if not sec:
             raise ValueError('нет такой секции')
