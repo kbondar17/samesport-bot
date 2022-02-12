@@ -35,5 +35,17 @@
             "request": "launch",
             "module": "bot.db.db_funs",
         },
+        {
+            "name": "sport session",
+            "type": "python",
+            "request": "launch",
+            "module": "bot.db.sport_session",
+        },
+        {
+            "name": "session",
+            "type": "python",
+            "request": "launch",
+            "module": "bot.db.session",
+        },
     ]
 }

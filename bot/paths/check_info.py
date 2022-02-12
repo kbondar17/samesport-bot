@@ -28,7 +28,9 @@ kb = InlineKeyboardMarkup(
 async def change(message: types.Message):
     # показываем текущие данные, предлагаем выбрать, что изменить
 
-    sec_info = repo.get_section_info()
+    section_id = message.from_user.id
+
+    sec_info = repo.get_section_info(u_id=section_id)
 
     text = f'<b><u>Сейчас на сайте следующие данные:</u></b>\
         \n\n<b>Название:</b>\n\n{sec_info.name}\n\n\

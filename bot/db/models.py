@@ -12,13 +12,30 @@ from sqlalchemy import (
 from bot.db.session import Base
 
 
+class SectionType(Base):
+    __tablename__ = 'section_type'
+    uid = Column(Integer, primary_key=True)
+    name = Column(String, index=True, unique=True)
+
+    def __repr__(self) -> str:
+        return f'SectionType {self.name} {self.uid}'
+
+class AgeGroup(Base):
+    __tablename__ = 'age_group'
+    uid = Column(Integer, primary_key=True)
+    name = Column(String, index=True)
+
+    def __repr__(self) -> str:
+        return f'AgeGroup {self.name} {self.uid}'
+
+
 class Section(Base):
     __tablename__ = 'sections'
     uid = Column(Integer, primary_key=True)
     name = Column(String, index=True)
     description = Column(String)
     timetable = Column(String)
-    sport_type = Column(String)
+    sport_type = Column(Integer, ForeignKey(SectionType.uid))
 
     def __repr__(self) -> str:
         return f'Section {self.name} {self.uid}'
