@@ -1,15 +1,19 @@
 # Telegram Bot for SameSport
 
-## venv через poetry: 
+## Virtual environment через poetry
     - pip install poetry
     - poetry shell
 
-## БД: 
+## Настроить бота
+    1. В корневом каталоге создать файл .env
+    2. Добавить в файл логин и пароль от базы данных.
+    3. Добавить в файл токен телеграм-бота.
 
-    python -m bot.db create
-    
-    python -m bot.db reset
+## БД
+### Создать
+python -m bot.db create
+### Удалить
+python -m bot.db reset
 
-## Запустить бота:
-
+## Запустить бота
     python -m bot
