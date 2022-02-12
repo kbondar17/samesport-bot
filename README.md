@@ -10,7 +10,6 @@
     
     python -m bot.db reset
 
-
-запустить бота:
+Запустить бота:
 
     python -m bot
