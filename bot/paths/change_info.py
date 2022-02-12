@@ -20,29 +20,48 @@ kb = InlineKeyboardMarkup(
 text = '<b><u>Сейчас на сайте следующие данные:</u></b>\
         \n\n<b>Название:</b>\n\n{}\n\n\
 <b>Описание:</b>\n\n{}\n\n\
-<b>Распиcание:</b>\n\n{}'
+<b>Распиcание:</b>{}\n\n\
+<b>Тип:\n\n</b>{}'
 
 
 @dp.callback_query_handler(text_contains='edit_name')
-async def change(call: types.CallbackQuery):
+async def change_name(call: types.CallbackQuery):
     await My_states.typing_name.set()
     await call.message.answer('👇🏻 Отправь новое название сообщением! 👇🏻', reply_markup=kb)
 
 
+@dp.callback_query_handler(text_contains='edit_type')
+async def change_type(call: types.CallbackQuery):
+    kb = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(
+            text='Адаптивный', callback_data='type_changed#Адаптивный')],
+        [InlineKeyboardButton(
+            text='Инклюзивный', callback_data='type_changed#Инклюзивный')],
+        [InlineKeyboardButton(
+            text='< Отменить', callback_data='cancel')],
+
+    ]
+)
+    await call.message.answer('Выберите тип', reply_markup=kb)
+
+
+    
+
 @dp.callback_query_handler(text_contains='edit_descr')
-async def change(call: types.CallbackQuery):
+async def change_descr(call: types.CallbackQuery):
     await My_states.typing_descr.set()
     await call.message.answer('👇🏻 Отправь новое описание сообщением! 👇🏻', reply_markup=kb)
 
 
 @dp.callback_query_handler(text_contains='edit_timetable')
-async def change(call: types.CallbackQuery):
+async def change_timetable(call: types.CallbackQuery):
     await My_states.typing_timetable.set()
     await call.message.answer('👇🏻 Отправь новое расписание! 👇🏻', reply_markup=kb)
 
 
 @dp.message_handler(state=My_states.typing_name)
-async def get_text(message: types.Message, state: FSMContext):
+async def get_name(message: types.Message, state: FSMContext):
     await state.reset_state()
     new_name = message.text
     repo.change_name(name=new_name, u_id=2)
@@ -53,7 +72,7 @@ async def get_text(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(state=My_states.typing_descr)
-async def get_text(message: types.Message, state: FSMContext):
+async def get_descr(message: types.Message, state: FSMContext):
     await state.reset_state()
     new_name = message.text
     repo.change_description(description=new_name, u_id=2)
@@ -64,7 +83,7 @@ async def get_text(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(state=My_states.typing_timetable)
-async def get_text(message: types.Message, state: FSMContext):
+async def get_timetable(message: types.Message, state: FSMContext):
     await state.reset_state()
     new_name = message.text
     repo.change_timetable(timetable=new_name, u_id=2)
@@ -72,3 +91,14 @@ async def get_text(message: types.Message, state: FSMContext):
     sec_info = repo.get_section_info()
 
     await message.answer(text.format(sec_info.name, sec_info.description, sec_info.timetable))
+
+
+@dp.callback_query_handler(text_contains='type_changed')
+async def change_type(call: types.CallbackQuery):
+
+    repo.change_type(new_type=call.data.split('#')[-1])
+    sec_info = repo.get_section_info()
+
+    await call.message.answer(text.format(sec_info.name, sec_info.description, 
+    sec_info.timetable, sec_info.sport_type ))
+

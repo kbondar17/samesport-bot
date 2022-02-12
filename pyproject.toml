@@ -12,6 +12,7 @@ python-dotenv = "^0.19.2"
 psycopg2-binary = "^2.9.3"
 typer = "^0.4.0"
 alembic = "^1.7.6"
+PyMySQL = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 

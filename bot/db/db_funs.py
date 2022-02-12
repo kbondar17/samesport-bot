@@ -17,7 +17,7 @@ user_email = 'email пользователя'
 # b потому что функция принимает байты
 # если хэшируем ввод пользователя, то
 # используем .encode() к данным
-user_password = hashlib.md5(b'password пользователя')
+user_password = hashlib.md5(b'users password')
 
 # читаем данные
 with con:
@@ -30,7 +30,7 @@ with con:
     print(id)
 # TODO: проверить валидность кода
 
-# each function is an SQL query
+#each function is an SQL query
 class Database:
 
     def add_user(self, u_id, user_name):
@@ -67,5 +67,19 @@ class Database:
             raise ValueError('нет такой секции')
         return sec
 
+    def get_type(self, u_id=1):
+        sec = db_session.query(Section).filter_by(uid=u_id).first()
+        if not sec:
+            raise ValueError('нет такой секции')
+        return sec.sport_type
+
+    def change_type(self, new_type, u_id=1):
+        sec = db_session.query(Section).filter_by(uid=u_id).first()
+        if not sec:
+            raise ValueError('нет такой секции')
+        sec.sport_type = new_type
+        db_session.commit()
+
+        logger.info(f'Поменяли тип секции!')
 
 repo = Database()

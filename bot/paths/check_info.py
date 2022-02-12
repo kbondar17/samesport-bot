@@ -17,6 +17,9 @@ kb = InlineKeyboardMarkup(
         [InlineKeyboardButton(
             text='Распиcание', callback_data='edit_timetable')],
         [InlineKeyboardButton(
+            text='Тип секции', callback_data='edit_type')],
+            
+        [InlineKeyboardButton(
             text='< Отменить', callback_data='back_to_start')],
 
     ]
@@ -28,14 +31,13 @@ kb = InlineKeyboardMarkup(
 async def change(message: types.Message):
     # показываем текущие данные, предлагаем выбрать, что изменить
 
-    section_id = message.from_user.id
-
-    sec_info = repo.get_section_info(u_id=section_id)
+    sec_info = repo.get_section_info(u_id=1)
 
     text = f'<b><u>Сейчас на сайте следующие данные:</u></b>\
         \n\n<b>Название:</b>\n\n{sec_info.name}\n\n\
 <b>Описание:</b>\n\n{sec_info.description}\n\n\
-<b>Распиcание:</b>\n\n{sec_info.timetable}'
+<b>Распиcание:</b>\n\n{sec_info.timetable}\n\n\
+<b>Тип:</b>\n\n{sec_info.sport_type}'
 
     await message.answer(text=text)
     await message.answer(text='Что меняем?', reply_markup=kb)
