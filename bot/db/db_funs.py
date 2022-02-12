@@ -58,24 +58,25 @@ class WordPressDatabase:
         availability = meta_info_query.filter_by(meta_key='availability').first().meta_value
         section_type = int(meta_info_query.filter_by(meta_key='section_type').first().meta_value)    
         sport = meta_info_query.filter_by(meta_key='section_sport').first().meta_value
-        
+         
+        # возрастов, и типов секций может не быть, а может быть несколько, проходимся и берем
         if age:
             age = re.findall(string=age, pattern='\"\d{1,2}\"')
             age = [int(e.strip('"') )for e in age]
+            age =  [db_session.query(self.section_terms).filter_by(term_id=e).first().name for e in age]
 
         if availability:
-                availability = re.findall(string=availability, pattern='\"\d{1,2}\"')
-                availability = [int(e.strip('"')) for e in availability]
-
+            availability = re.findall(string=availability, pattern='\"\d{1,2}\"')
+            availability = [int(e.strip('"')) for e in availability]
+            availability =  [db_session.query(self.section_terms).filter_by(term_id=e).first().name for e in availability]
+                
         if sport:
-                sport = re.findall(string=sport, pattern='\"\d{1,2}\"')
-                sport = [int(e.strip('"') )for e in sport]
+            sport = re.findall(string=sport, pattern='\"\d{1,2}\"')
+            sport = [int(e.strip('"') )for e in sport]
+            sport =  [db_session.query(self.section_terms).filter_by(term_id=e).first().name for e in sport]
 
-        # возрастов, и типов секций может быть несколько, проходимся и берем
-        age =  [db_session.query(self.section_terms).filter_by(term_id=e).first().name for e in age]
-        availability =  [db_session.query(self.section_terms).filter_by(term_id=e).first().name for e in availability]
-        sport =  [db_session.query(self.section_terms).filter_by(term_id=e).first().name for e in sport]
-        section_type =  db_session.query(self.section_terms).filter_by(term_id=section_type).first().name
+        
+        section_type = db_session.query(self.section_terms).filter_by(term_id=section_type).first().name
 
         return {'name': section_info.post_title, 'link': section_info.guid, 
                 'description': description, 'schedule': schedule, 'contacts': contacts, 'sport':sport,
