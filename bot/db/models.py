@@ -1,3 +1,5 @@
+
+# test tables
 from sqlalchemy import (
     Boolean,
     Column,
@@ -11,7 +13,7 @@ from sqlalchemy import (
 
 from bot.db.session import Base
 
-
+# test table 1
 class Section(Base):
     __tablename__ = 'sections'
     uid = Column(Integer, primary_key=True)
@@ -23,7 +25,7 @@ class Section(Base):
     def __repr__(self) -> str:
         return f'Section {self.name} {self.uid}'
 
-
+# test table 2
 class User(Base):
     __tablename__ = 'users'
 
