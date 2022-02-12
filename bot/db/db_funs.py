@@ -1,9 +1,34 @@
-from bot.db.session import db_session
 from bot.db.models import User, Section
-
+from bot.db.session import db_session
 from bot.loader import get_logger
 
 logger = get_logger(f'my_log-{__name__}')
+
+# TODO: переделать под sqlalchemy
+# подключаем нужные либы
+import pymysql
+import hashlib
+
+# создаем подключение к БД
+con = pymysql.connect('host', 'user', 'зфыыцщкв', 'db')
+
+# Данные пользователя
+user_email = 'email пользователя'
+# b потому что функция принимает байты
+# если хэшируем ввод пользователя, то
+# используем .encode() к данным
+user_password = hashlib.md5(b'password пользователя')
+
+# читаем данные
+with con:
+    cur = con.cursor()
+
+    # TODO: добавить проверку пароля
+    cur.execute("SELECT * FROM wp_users WHERE user_email=%s", user_email)
+
+    id = cur.fetchone()
+    print(id)
+# TODO: проверить валидность кода
 
 # each function is an SQL query
 class Database:

@@ -134,3 +134,10 @@ dmypy.json
 
 # JetBrains
 .idea/
+
+# VSCode
+.vscode/
+
+# Alembic
+alembic.ini
+alembic/

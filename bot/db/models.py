@@ -1,4 +1,3 @@
-
 # test tables
 from sqlalchemy import (
     Boolean,
@@ -13,7 +12,6 @@ from sqlalchemy import (
 
 from bot.db.session import Base
 
-<<<<<<< HEAD
 
 class SectionType(Base):
     __tablename__ = 'section_type'
@@ -22,6 +20,7 @@ class SectionType(Base):
 
     def __repr__(self) -> str:
         return f'SectionType {self.name} {self.uid}'
+
 
 class AgeGroup(Base):
     __tablename__ = 'age_group'
@@ -32,9 +31,7 @@ class AgeGroup(Base):
         return f'AgeGroup {self.name} {self.uid}'
 
 
-=======
 # test table 1
->>>>>>> 88d2b3517cdafb74f96b881ac4708ed45da46f1e
 class Section(Base):
     __tablename__ = 'sections'
     uid = Column(Integer, primary_key=True)
@@ -45,6 +42,7 @@ class Section(Base):
 
     def __repr__(self) -> str:
         return f'Section {self.name} {self.uid}'
+
 
 # test table 2
 class User(Base):
