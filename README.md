@@ -1,15 +1,15 @@
-**venv через poetry:** 
-    
-    pip install poetry
-    
-    poetry shell
+# Telegram Bot for SameSport
 
-БД: 
+## venv через poetry: 
+    - pip install poetry
+    - poetry shell
+
+## БД: 
 
     python -m bot.db create
     
     python -m bot.db reset
 
-Запустить бота:
+## Запустить бота:
 
     python -m bot
