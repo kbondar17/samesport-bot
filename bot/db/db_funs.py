@@ -2,6 +2,7 @@ from bot.db.session import db_session
 from bot.db.models import User, Section
 
 from bot.loader import get_logger
+
 logger = get_logger(f'my_log-{__name__}')
 
 
@@ -23,13 +24,13 @@ class Database:
         db_session.commit()
         logger.info(f'Поменяли название секции!')
 
-    def change_description(self,  description, u_id=1):
+    def change_description(self, description, u_id=1):
         sec = db_session.query(Section).filter_by(uid=u_id).first()
         sec.description = description
         db_session.commit()
         logger.info(f'Поменяли описание секции!')
 
-    def change_timetable(self,  timetable, u_id=1):
+    def change_timetable(self, timetable, u_id=1):
         sec = db_session.query(Section).filter_by(uid=u_id).first()
         sec.timetable = timetable
         db_session.commit()

@@ -11,7 +11,6 @@ logger = get_logger(f'my_log-{__name__}')
 
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
-
     main_menu = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='📝 Изменить данные секции')],
                                               ]
                                     )
@@ -19,4 +18,6 @@ async def start(message: types.Message):
     user_id = message.from_user.id
     user_name = message.from_user.username
     repo.add_user(user_id, user_name=user_name)
-    await message.answer('Привет! Тут можно изменить данные о вашей секции на сайте samesport.ru! Нажми "изменить данные в меню" ', reply_markup=main_menu)
+    await message.answer(
+        'Привет! Тут можно изменить данные о вашей секции на сайте samesport.ru! Нажми "изменить данные в меню" ',
+        reply_markup=main_menu)

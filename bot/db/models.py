@@ -9,12 +9,10 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 
-
 from bot.db.session import Base
 
 
 class Section(Base):
-
     __tablename__ = 'sections'
     uid = Column(Integer, primary_key=True)
     name = Column(String, index=True)

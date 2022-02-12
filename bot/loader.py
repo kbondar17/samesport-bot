@@ -10,7 +10,6 @@ from dotenv import dotenv_values
 
 config = dotenv_values(".env")
 
-
 bot = Bot(token=config['TOKEN'], parse_mode=ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)

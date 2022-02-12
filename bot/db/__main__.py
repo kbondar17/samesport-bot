@@ -1,5 +1,3 @@
-
-
 from typer import Typer
 
 from bot.db.session import create_db, db_session, reset_db
