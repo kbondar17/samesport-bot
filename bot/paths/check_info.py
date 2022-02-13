@@ -5,7 +5,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardBut
 from aiogram.dispatcher import FSMContext
 
 from bot.loader import get_logger, dp
-from bot.db.db_funs import repo, wp_repo
+from bot.db.db_funs import wp_repo
 from bot.my_states import My_states
 
 logger = get_logger(f'my_log-{__name__}')
@@ -46,11 +46,10 @@ async def check_email(message: types.Message, state: FSMContext):
 
     passwods = message.text
 
-    #TODO: проверка пароля в БД
-    
     if passwods == 'password':
         await state.reset_state()
         await message.answer('Все верно. Вы авторизованы.')
+        wp_repo.set_user_is_authorized(message.from_user.id)
         sec_info = wp_repo.get_section_info(uid=222)
 
         await message.answer(text.format(name=sec_info['name'], descr=sec_info['description'],

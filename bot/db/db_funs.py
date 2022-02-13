@@ -1,9 +1,5 @@
 import re
-
-from bot.db.models import User, Section
-# from bot.db.session import db_session, Base
 from bot.db.sport_session    import db_session, Base
-
 from bot.loader import get_logger
 
 logger = get_logger(f'my_log-{__name__}')
@@ -155,60 +151,16 @@ class WordPressDatabase:
     def add_user_data_2(self, uid, number):
         pass
 
-
-#each function is an SQL query
-class Database: # старая тестовая БД, скоро удалим
-
-    def add_user(self, u_id, user_name):
-        user = db_session.query(User).filter_by(uid=u_id).count()
-        logger.info(f'юзер {u_id} уже есть!')
-
-        if not user:
-            user = User(uid=u_id, tg_user_name=user_name)
-            db_session.add(user)
-            db_session.commit()
-            logger.info(f'добавили юзера {u_id} в БД!')
-
-    def change_name(self, name, u_id=1):
-        sec = db_session.query(Section).filter_by(uid=u_id).first()
-        sec.name = name
-        db_session.commit()
-        logger.info(f'Поменяли название секции!')
-
-    def change_description(self, description, u_id=1):
-        sec = db_session.query(Section).filter_by(uid=u_id).first()
-        sec.description = description
-        db_session.commit()
-        logger.info(f'Поменяли описание секции!')
-
-    def change_timetable(self, timetable, u_id=1):
-        sec = db_session.query(Section).filter_by(uid=u_id).first()
-        sec.timetable = timetable
-        db_session.commit()
-        logger.info(f'Поменяли расписание секции!')
-
-    def get_section_info(self, u_id=1) -> Section:
-        sec = db_session.query(Section).filter_by(uid=u_id).first()
-        if not sec:
-            raise ValueError('нет такой секции')
-        return sec
-
-    def get_type(self, u_id=1):
-        sec = db_session.query(Section).filter_by(uid=u_id).first()
-        if not sec:
-            raise ValueError('нет такой секции')
-        return sec.sport_type
-
-    def change_type(self, new_type, u_id=1):
-        sec = db_session.query(Section).filter_by(uid=u_id).first()
-        if not sec:
-            raise ValueError('нет такой секции')
-        sec.sport_type = new_type
-        db_session.commit()
-
-        logger.info(f'Поменяли тип секции!')
+    def check_if_authorized(self, uid):
+        meta_info_query = db_session.query(self.user_registration).filter_by(user_id=uid)
+        registation = meta_info_query.filter_by(meta_key='user_registration').first()
+        if registation.user_registration: 
+            return True
+    
+    def set_user_is_authorized(self, uid):
+        meta_info_query = db_session.query(self.user_registration).filter_by(user_id=uid)
+        registation = meta_info_query.filter_by(meta_key='user_registration').first()
+        registation.user_registration = True
 
 
-
-repo = Database()
 wp_repo = WordPressDatabase()

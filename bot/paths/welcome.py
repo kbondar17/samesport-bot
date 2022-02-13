@@ -1,11 +1,10 @@
-import logging
-
 from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.dispatcher import FSMContext
 
 from bot.loader import get_logger, dp
-from bot.db.db_funs import repo
+from bot.db.db_funs import wp_repo
+
 from bot.my_states import My_states
 
 logger = get_logger(f'my_log-{__name__}')
@@ -22,13 +21,11 @@ main_menu = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='📝 Измен�
 async def start(message: types.Message):
     # приветственное сообщение
     # если пользователь не авторизован - просим ввести логин/пароль
-    # если авторизован - показываем доступные секции
 
     user_id = message.from_user.id
-    user_name = message.from_user.username
     
-    check_if_authorized = False # TODO: проверка в базе
-
+    # check_if_authorized = wp_repo.check_if_authorized(user_id)
+    check_if_authorized = True
     await message.answer(text=welcome_text)
     
     if not check_if_authorized:
