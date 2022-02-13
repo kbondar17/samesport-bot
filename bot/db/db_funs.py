@@ -1,36 +1,38 @@
 import re
 
 from bot.db.models import User, Section
-from bot.db.session import db_session, Base
+# from bot.db.session import db_session, Base
+from bot.db.sport_session    import db_session, Base
+
 from bot.loader import get_logger
 
 logger = get_logger(f'my_log-{__name__}')
 
-# TODO: переделать под sqlalchemy
-# подключаем нужные либы
-import pymysql
-import hashlib
+# # TODO: переделать под sqlalchemy
+# # подключаем нужные либы
+# import pymysql
+# import hashlib
 
-# создаем подключение к БД
-con = pymysql.connect('host', 'user', 'зфыыцщкв', 'db')
+# # создаем подключение к БД
+# con = pymysql.connect('host', 'user', 'зфыыцщкв', 'db')
 
-# Данные пользователя
-user_email = 'email пользователя'
-# b потому что функция принимает байты
-# если хэшируем ввод пользователя, то
-# используем .encode() к данным
-user_password = hashlib.md5(b'users password')
+# # Данные пользователя
+# user_email = 'email пользователя'
+# # b потому что функция принимает байты
+# # если хэшируем ввод пользователя, то
+# # используем .encode() к данным
+# user_password = hashlib.md5(b'users password')
 
-# читаем данные
-with con:
-    cur = con.cursor()
+# # читаем данные
+# with con:
+#     cur = con.cursor()
 
-    # TODO: добавить проверку пароля
-    cur.execute("SELECT * FROM wp_users WHERE user_email=%s", user_email)
+#     # TODO: добавить проверку пароля
+#     cur.execute("SELECT * FROM wp_users WHERE user_email=%s", user_email)
 
-    id = cur.fetchone()
-    print(id)
-# TODO: проверить валидность кода
+#     id = cur.fetchone()
+#     print(id)
+# # TODO: проверить валидность кода
 
 
 class WordPressDatabase:
@@ -52,6 +54,8 @@ class WordPressDatabase:
         description =  meta_info_query.filter_by(meta_key='section_description').first().meta_value
         schedule = meta_info_query.filter_by(meta_key='section_schedule').first().meta_value
         contacts = meta_info_query.filter_by(meta_key='section_contacts').first().meta_value
+        address = meta_info_query.filter_by(meta_key='section_address_text').first().meta_value
+
 
         # эту вытягиваем из строки вроде 'a:1:{i:0;s:2:"33";}' и потом идем искать в другой таблице
         age = meta_info_query.filter_by(meta_key='age').first().meta_value
@@ -78,9 +82,11 @@ class WordPressDatabase:
         
         section_type = db_session.query(self.section_terms).filter_by(term_id=section_type).first().name
 
-        return {'name': section_info.post_title, 'link': section_info.guid, 
+        print('инфа о секции ---',locals())
+
+        return {'name': section_info.post_title, 'link': section_info.guid, 'schedule': schedule,
                 'description': description, 'schedule': schedule, 'contacts': contacts, 'sport':sport,
-                'age': age, 'availability':availability, 'section_type':section_type,
+                'age': age, 'availability':availability, 'section_type':section_type, 'adress': address
                 }    
 
 
@@ -94,11 +100,59 @@ class WordPressDatabase:
         section_info = db_session.query(self.basic_section_info).filter_by(ID=uid).first()
         section_info.post_title = new_name
         db_session.commit()
+        logger.debug('Поменяли название секции на %s!', new_name)
 
-    def change_description(self, description, u_id=1):
-        pass
+    def change_description(self, new_description, u_id=220):
+        meta_info_query = db_session.query(self.additional_section_info).filter_by(post_id=u_id)
+        description = meta_info_query.filter_by(meta_key='section_description').first()
+        
+        if not description:
+            raise ValueError('У секции нет описания!')
+        
+        description.meta_value = new_description
+        db_session.commit()
+        logger.debug('Поменяли описание секции на %s!', new_description)
 
+
+    def change_timtable(self, new_timetable, u_id=220):
+        meta_info_query = db_session.query(self.additional_section_info).filter_by(post_id=u_id)
+        time_table = meta_info_query.filter_by(meta_key='section_schedule').first()
+        
+        if not time_table:
+            raise ValueError('У секции нет описания!')
+
+        time_table.meta_value = new_timetable
+        db_session.commit()
+        logger.debug('Поменяли описание секции секции на %s!', new_timetable)
+
+    def change_contacts(self, new_contacts: str, u_id=220):
+        meta_info_query = db_session.query(self.additional_section_info).filter_by(post_id=u_id)
+        contacts = meta_info_query.filter_by(meta_key='section_contacts').first()
+
+        if not contacts:
+            raise ValueError('У секции нет описания!')
+
+        contacts.meta_value = new_contacts
+        db_session.commit()
+        logger.debug('Поменяли расписание секции секции на %s!', new_contacts)
+
+
+    def change_adress(self, new_adress: str, u_id=220):
+        meta_info_query = db_session.query(self.additional_section_info).filter_by(post_id=u_id)
+        address = meta_info_query.filter_by(meta_key='section_address_text').first()
+        
+        if not address:
+            ValueError('у секции нет адреса')
+
+        address.meta_value = new_adress
+        db_session.commit()
+        logger.debug('Поменяли адресс секции секции на %s!', new_adress)
+
+
+    #    section_type = int(meta_info_query.filter_by(meta_key='section_type').first().meta_value) 
     
+  
+
 #each function is an SQL query
 class Database: # старая тестовая БД, скоро удалим
 
@@ -154,3 +208,4 @@ class Database: # старая тестовая БД, скоро удалим
 
 
 repo = Database()
+wp_repo = WordPressDatabase()
