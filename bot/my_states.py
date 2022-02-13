@@ -12,3 +12,7 @@ class My_states(StatesGroup):
     typing_contacts = State()
     typing_adress = State()
 
+    poll_how_many = State()
+    poll_how_many_from_same = State()
+    poll_feed_back = State()
+    poll_end = State()

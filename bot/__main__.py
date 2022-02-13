@@ -6,4 +6,5 @@ logger = get_logger(f'my_log-{__name__}')
 
 if __name__ == '__main__':
     logger.debug('окей лестгоу')
+    
     executor.start_polling(dp)

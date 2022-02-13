@@ -8,30 +8,30 @@ from bot.loader import get_logger
 
 logger = get_logger(f'my_log-{__name__}')
 
-# TODO: переделать под sqlalchemy
-# подключаем нужные либы
-import pymysql
-import hashlib
+# # TODO: переделать под sqlalchemy
+# # подключаем нужные либы
+# import pymysql
+# import hashlib
 
-# создаем подключение к БД
-con = pymysql.connect('host', 'user', 'зфыыцщкв', 'db')
+# # создаем подключение к БД
+# con = pymysql.connect('host', 'user', 'зфыыцщкв', 'db')
 
-# Данные пользователя
-user_email = 'email пользователя'
-# b потому что функция принимает байты
-# если хэшируем ввод пользователя, то
-# используем .encode() к данным
-user_password = hashlib.md5(b'users password')
+# # Данные пользователя
+# user_email = 'email пользователя'
+# # b потому что функция принимает байты
+# # если хэшируем ввод пользователя, то
+# # используем .encode() к данным
+# user_password = hashlib.md5(b'users password')
 
-# читаем данные
-with con:
-    cur = con.cursor()
+# # читаем данные
+# with con:
+#     cur = con.cursor()
 
-    # TODO: добавить проверку пароля
-    cur.execute("SELECT * FROM wp_users WHERE user_email=%s", user_email)
+#     # TODO: добавить проверку пароля
+#     cur.execute("SELECT * FROM wp_users WHERE user_email=%s", user_email)
 
-    id = cur.fetchone()
-    print(id)
+#     id = cur.fetchone()
+#     print(id)
 # TODO: проверить валидность кода
 
 
@@ -42,7 +42,7 @@ class WordPressDatabase:
     additional_section_info =  Base.classes.wp_postmeta 
     section_terms = Base.classes.wp_terms  # возраст, вид спорта, доступность
 
-    def get_section_info(self, uid=220):
+    def get_section_info(self, uid=222):
 
         section_info = db_session.query(self.basic_section_info).filter_by(ID=uid).first()
 
@@ -148,7 +148,13 @@ class WordPressDatabase:
         db_session.commit()
         logger.debug('Поменяли адресс секции секции на %s!', new_adress)
 
-  
+    # обратная связь от юзера
+    def add_user_data(self, uid, number): 
+        pass 
+    
+    def add_user_data_2(self, uid, number):
+        pass
+
 
 #each function is an SQL query
 class Database: # старая тестовая БД, скоро удалим

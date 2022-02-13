@@ -3,11 +3,17 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardBut
 from aiogram.dispatcher import FSMContext
 
 from bot.loader import get_logger, dp
-from bot.db.db_funs import repo, wp_repo
+from bot.db.db_funs import wp_repo
 
 from bot.my_states import My_states
 
+
+
+DEFUAULT_SECTION = 222
+
 logger = get_logger(f'my_log-{__name__}')
+
+from bot.paths.check_info import what_to_change_kb
 
 kb = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -75,7 +81,7 @@ async def ask_to_change_adress(call: types.CallbackQuery):
 async def change_name(message: types.Message, state: FSMContext):
     await state.reset_state()
     new_name = message.text
-    wp_repo.change_name(new_name, uid=222)
+    wp_repo.change_name(new_name, uid=DEFUAULT_SECTION)
     # repo.change_name(name=new_name, u_id=2)
     await message.answer('Поменяли название. Теперь вот так:')
     sec_info = wp_repo.get_section_info(uid=222)
@@ -83,6 +89,8 @@ async def change_name(message: types.Message, state: FSMContext):
     await message.answer(text.format(name=sec_info['name'], descr=sec_info['description'],
                                 contacts=sec_info['contacts'],  
                                 schedule=sec_info['schedule'], sport=sec_info['sport'][0], adress=sec_info['adress']))
+    
+    await message.answer(text='Поменять что-нибудь еще?', reply_markup=what_to_change_kb)
 
 
 
@@ -90,11 +98,13 @@ async def change_name(message: types.Message, state: FSMContext):
 async def change_descr(message: types.Message, state: FSMContext):
     await state.reset_state()
     new_name = message.text
-    repo.change_description(description=new_name, u_id=2)
+    wp_repo.change_description(new_description=new_name, u_id=DEFUAULT_SECTION)
     await message.answer('Поменяли описание. Теперь вот так:')
-    sec_info = repo.get_section_info()
+
+    sec_info = wp_repo.get_section_info()
 
     await message.answer(text.format(sec_info.name, sec_info.description, sec_info.timetable))
+    await message.answer(text='Поменять что-нибудь еще?', reply_markup=what_to_change_kb)
 
 
 @dp.message_handler(state=My_states.typing_timetable)
@@ -103,16 +113,17 @@ async def change_timetable(message: types.Message, state: FSMContext):
     new_timetable = message.text
     
     #repo.change_timetable(timetable=new_name, u_id=2)
-    wp_repo.change_timtable(new_timetable=new_timetable, u_id=222)
+    wp_repo.change_timtable(new_timetable=new_timetable, u_id=DEFUAULT_SECTION)
     
     await message.answer('Поменяли расписание. Теперь вот так:')
     #sec_info = repo.get_section_info()
-    sec_info = wp_repo.get_section_info(uid=222)
+    sec_info = wp_repo.get_section_info(uid=DEFUAULT_SECTION)
 
     await message.answer(text.format(name=sec_info['name'], descr=sec_info['description'],
                                     contacts=sec_info['contacts'],  
                                     schedule=sec_info['schedule'], sport=sec_info['sport'][0], adress=sec_info['adress']))
-
+    
+    await message.answer(text='Поменять что-нибудь еще?', reply_markup=what_to_change_kb)
 
 @dp.message_handler(state=My_states.typing_contacts)
 async def change_contacts(message: types.Message, state: FSMContext):
@@ -126,6 +137,8 @@ async def change_contacts(message: types.Message, state: FSMContext):
     await message.answer(text.format(name=sec_info['name'], descr=sec_info['description'],
                                     contacts=sec_info['contacts'],  
                                     schedule=sec_info['schedule'], sport=sec_info['sport'][0], adress=sec_info['adress']))
+    
+    await message.answer(text='Поменять что-нибудь еще?', reply_markup=what_to_change_kb)
 
 
 
@@ -136,23 +149,25 @@ async def change_adress(message: types.Message, state: FSMContext):
     await state.reset_state()
     new_adress = message.text
     
-    #repo.change_timetable(timetable=new_name, u_id=2)
-    wp_repo.change_adress(new_adress, u_id=222)
+    wp_repo.change_adress(new_adress, u_id=DEFUAULT_SECTION)
     
     await message.answer('Поменяли адрес. Теперь вот так:')
     #sec_info = repo.get_section_info()
-    sec_info = wp_repo.get_section_info(uid=222)
+    sec_info = wp_repo.get_section_info(uid=DEFUAULT_SECTION)
 
     await message.answer(text.format(name=sec_info['name'], descr=sec_info['description'],
                                     contacts=sec_info['contacts'],  
                                     schedule=sec_info['schedule'], sport=sec_info['sport'][0], adress=sec_info['adress']))
 
+    await message.answer(text='Поменять что-нибудь еще?', reply_markup=what_to_change_kb)
+
+
 @dp.callback_query_handler(text_contains='type_changed')
 async def change_type(call: types.CallbackQuery):
+    await call.message.answer(text='Пока не умею изменять вид тип секции')
+    # repo.change_type(new_type=call.data.split('#')[-1])
+    # sec_info = repo.get_section_info()
 
-    repo.change_type(new_type=call.data.split('#')[-1])
-    sec_info = repo.get_section_info()
-
-    await call.message.answer(text.format(sec_info.name, sec_info.description, 
-    sec_info.timetable, sec_info.sport_type ))
+    # await call.message.answer(text.format(sec_info.name, sec_info.description, 
+    # sec_info.timetable, sec_info.sport_type ))
 

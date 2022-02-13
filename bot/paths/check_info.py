@@ -10,7 +10,7 @@ from bot.my_states import My_states
 
 logger = get_logger(f'my_log-{__name__}')
 
-kb = InlineKeyboardMarkup(
+what_to_change_kb = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(
             text='Название', callback_data='edit_name')],
@@ -23,7 +23,7 @@ kb = InlineKeyboardMarkup(
         [InlineKeyboardButton(
             text='Адрес', callback_data='edit_adress')],
         [InlineKeyboardButton(
-            text='< Отменить', callback_data='back_to_start')],
+            text='< Отменить', callback_data='cancel')],
 
     ]
 
@@ -57,7 +57,7 @@ async def check_email(message: types.Message, state: FSMContext):
                                     contacts=sec_info['contacts'],  
                                     schedule=sec_info['schedule'], sport=sec_info['sport'][0], adress=sec_info['adress']))
 
-        await message.answer(text='Что меняем?', reply_markup=kb)
+        await message.answer(text='Что меняем?', reply_markup=what_to_change_kb)
         await message.delete()
 
     else:
@@ -80,7 +80,7 @@ async def change(message: types.Message):
                                     contacts=sec_info['contacts'],  
                                     schedule=sec_info['schedule'], sport=sec_info['sport'][0], adress=sec_info['adress']))
 
-        await message.answer(text='Что меняем?', reply_markup=kb)
+        await message.answer(text='Что меняем?', reply_markup=what_to_change_kb)
     
     else:
         await message.answer(text='Вы не авторизованы. Пришлите почту, на которую зарегистрирован аккаунт на Samesport.ru')

@@ -11,7 +11,7 @@ from bot.my_states import My_states
 logger = get_logger(f'my_log-{__name__}')
 
 
-welcome_text =  'Привет! Тут можно изменить данные о вашей секции на сайте samesport.ru!'
+welcome_text =  'Здравствуйте, я чат-бот SameSport. Я помогаю поддерживать актуальность информации о спортивных секциях на портале SameSport'
 main_menu = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='📝 Изменить данные секции'),
                                                 KeyboardButton(text='❓ О боте')],
                                               ]
@@ -39,7 +39,7 @@ async def start(message: types.Message):
 @dp.message_handler(state=My_states.typing_email)
 async def check_email(message: types.Message, state: FSMContext):
     email = message.text
-    if email == 'email':
+    if email == 'samesport@mail.ru':
         await message.answer("Отлично! А теперь пароль")
         await My_states.typing_pass.set()
     
