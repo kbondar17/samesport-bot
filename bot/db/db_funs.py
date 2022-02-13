@@ -8,31 +8,31 @@ from bot.loader import get_logger
 
 logger = get_logger(f'my_log-{__name__}')
 
-# # TODO: переделать под sqlalchemy
-# # подключаем нужные либы
-# import pymysql
-# import hashlib
+# TODO: переделать под sqlalchemy
+# подключаем нужные либы
+import pymysql
+import hashlib
 
-# # создаем подключение к БД
-# con = pymysql.connect('host', 'user', 'зфыыцщкв', 'db')
+# создаем подключение к БД
+con = pymysql.connect('host', 'user', 'зфыыцщкв', 'db')
 
-# # Данные пользователя
-# user_email = 'email пользователя'
-# # b потому что функция принимает байты
-# # если хэшируем ввод пользователя, то
-# # используем .encode() к данным
-# user_password = hashlib.md5(b'users password')
+# Данные пользователя
+user_email = 'email пользователя'
+# b потому что функция принимает байты
+# если хэшируем ввод пользователя, то
+# используем .encode() к данным
+user_password = hashlib.md5(b'users password')
 
-# # читаем данные
-# with con:
-#     cur = con.cursor()
+# читаем данные
+with con:
+    cur = con.cursor()
 
-#     # TODO: добавить проверку пароля
-#     cur.execute("SELECT * FROM wp_users WHERE user_email=%s", user_email)
+    # TODO: добавить проверку пароля
+    cur.execute("SELECT * FROM wp_users WHERE user_email=%s", user_email)
 
-#     id = cur.fetchone()
-#     print(id)
-# # TODO: проверить валидность кода
+    id = cur.fetchone()
+    print(id)
+# TODO: проверить валидность кода
 
 
 class WordPressDatabase:
@@ -148,9 +148,6 @@ class WordPressDatabase:
         db_session.commit()
         logger.debug('Поменяли адресс секции секции на %s!', new_adress)
 
-
-    #    section_type = int(meta_info_query.filter_by(meta_key='section_type').first().meta_value) 
-    
   
 
 #each function is an SQL query
